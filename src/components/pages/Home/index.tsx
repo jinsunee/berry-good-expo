@@ -1,4 +1,5 @@
-import BottomSheet from "components/shared/BottomSheet";
+import { useNavigation } from "@react-navigation/native";
+import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
 import { useGoalItems } from "hooks/useGoalItems";
 import { useGoals } from "hooks/useGoals";
 import useIsOpen from "hooks/useIsOpen";
@@ -9,6 +10,7 @@ export default function Page() {
   const { data } = useGoals();
   const { data: goalItems } = useGoalItems();
   const { isOpen, toggle } = useIsOpen();
+  const { navigate } = useNavigation<HomeStackNavigationType>();
   // const db = useDB();
 
   // useEffect(() => {
@@ -24,13 +26,9 @@ export default function Page() {
 
   return (
     <Container>
-      <Pressable onPress={toggle} style={{ padding: 10 }}>
+      <Pressable onPress={() => navigate("GoalList")} style={{ padding: 10 }}>
         <Text>Home</Text>
       </Pressable>
-
-      <BottomSheet isOpen={isOpen} onClose={toggle}>
-        <Text>123</Text>
-      </BottomSheet>
     </Container>
   );
 }
