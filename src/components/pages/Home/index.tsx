@@ -1,9 +1,17 @@
-import { SafeAreaView, Text } from "react-native";
+import { Text } from "react-native";
+import styled from "styled-components/native";
 
 export default function Page() {
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-white">
+    <Container>
       <Text>Home</Text>
-    </SafeAreaView>
+    </Container>
   );
 }
+
+const Container = styled.SafeAreaView`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
