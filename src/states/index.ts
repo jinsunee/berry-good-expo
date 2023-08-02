@@ -1,6 +1,7 @@
 import { atom } from "recoil";
+import { Goal } from "types/goal";
 
-export const focusedGoalIdAtom = atom<string | null>({
-  key: "focusedGoalId",
+export const focusedGoalAtom = atom<Goal | null>({
+  key: "focusedGoal",
   default: null,
 });
