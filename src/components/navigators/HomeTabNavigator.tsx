@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Settings from "../pages/Settings";
+import Settings from "components/pages/Settings";
 import HomeStackNavigator from "./HomeStackNavigator";
 
 const Tab = createBottomTabNavigator();
