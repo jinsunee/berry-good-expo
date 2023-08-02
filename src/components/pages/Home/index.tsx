@@ -1,11 +1,14 @@
+import BottomSheet from "components/shared/BottomSheet";
 import { useGoalItems } from "hooks/useGoalItems";
 import { useGoals } from "hooks/useGoals";
-import { Text } from "react-native";
+import useIsOpen from "hooks/useIsOpen";
+import { Pressable, Text } from "react-native";
 import styled from "styled-components/native";
 
 export default function Page() {
   const { data } = useGoals();
   const { data: goalItems } = useGoalItems();
+  const { isOpen, toggle } = useIsOpen();
   // const db = useDB();
 
   // useEffect(() => {
@@ -21,7 +24,13 @@ export default function Page() {
 
   return (
     <Container>
-      <Text>Home</Text>
+      <Pressable onPress={toggle} style={{ padding: 10 }}>
+        <Text>Home</Text>
+      </Pressable>
+
+      <BottomSheet isOpen={isOpen} onClose={toggle}>
+        <Text>123</Text>
+      </BottomSheet>
     </Container>
   );
 }
