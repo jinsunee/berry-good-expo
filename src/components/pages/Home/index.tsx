@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
+import PlusSvg from "assets/svgs/plus.svg";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
 import { useGoalItems } from "hooks/useGoalItems";
 import { useGoals } from "hooks/useGoals";
 import useIsOpen from "hooks/useIsOpen";
-import { Pressable, Text } from "react-native";
 import styled from "styled-components/native";
+import { colors } from "../../../utils/colors";
 
 export default function Page() {
   const { data } = useGoals();
@@ -26,9 +27,9 @@ export default function Page() {
 
   return (
     <Container>
-      <Pressable onPress={() => navigate("GoalList")} style={{ padding: 10 }}>
-        <Text>Home</Text>
-      </Pressable>
+      <PlusButton onPress={() => navigate("AddGoal")}>
+        <PlusSvg fill={colors.dark} />
+      </PlusButton>
     </Container>
   );
 }
@@ -36,6 +37,16 @@ export default function Page() {
 const Container = styled.SafeAreaView`
   display: flex;
   flex: 1;
+  margin: 20px;
+`;
+
+const PlusButton = styled.Pressable`
+  display: flex;
   justify-content: center;
   align-items: center;
+  width: 58px;
+  height: 35px;
+  align-self: flex-end;
+  background-color: ${colors.primary};
+  border-radius: 20px;
 `;

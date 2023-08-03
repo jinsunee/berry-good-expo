@@ -2,9 +2,9 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
+import AddGoal from "components/pages/AddGoal";
 import Home from "components/pages/Home";
 import Item from "components/pages/Item";
-import { GoalListStackNavigator } from "./GoalListStackNavigator";
 
 type HomeStackParamList = {
   Home: undefined;
@@ -34,8 +34,8 @@ export default function HomeStackNavigator() {
         options={{ headerShown: false, presentation: "modal" }}
       />
       <Stack.Screen
-        name="GoalList"
-        component={GoalListStackNavigator}
+        name="AddGoal"
+        component={AddGoal}
         options={{ headerShown: false, presentation: "modal" }}
       />
     </Stack.Navigator>
