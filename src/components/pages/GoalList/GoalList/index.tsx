@@ -50,8 +50,13 @@ function GoalItem({
     <>
       {isFocused && (
         <FocusedGoalItem>
-          <View>
-            <Title>{title}</Title>
+          <View
+            style={{
+              flex: 1,
+              paddingRight: 5,
+            }}
+          >
+            <Title style={{ flexWrap: "wrap" }}>{title}</Title>
             <View
               style={{
                 display: "flex",
@@ -73,7 +78,7 @@ function GoalItem({
       )}
       {!isFocused && (
         <NormalGoalItem onPress={onPressItem}>
-          <View>
+          <View style={{ flex: 1, paddingRight: 5 }}>
             <Title>{title}</Title>
             <View
               style={{

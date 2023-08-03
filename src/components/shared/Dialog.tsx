@@ -35,7 +35,7 @@ export function Dialog({
         {children}
         <Spacing size={20} />
         <View style={{ flexDirection: "row", margin: 15, gap: 5 }}>
-          <CancelButton>
+          <CancelButton onPress={onClose}>
             <Text
               style={{ color: colors.dark, fontSize: 22, fontWeight: "bold" }}
             >
