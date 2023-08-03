@@ -23,7 +23,7 @@ export function AddGoalForm() {
   const handleSubmit = async () => {
     if (!goal || !startAt || !endAt) return;
 
-    await onAddGoal({ goal, startAt, endAt });
+    await onAddGoal({ title: goal, startAt, endAt });
     goBack();
   };
 

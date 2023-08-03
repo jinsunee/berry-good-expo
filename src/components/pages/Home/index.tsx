@@ -1,35 +1,32 @@
 import { useNavigation } from "@react-navigation/native";
 import PlusSvg from "assets/svgs/plus.svg";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
-import { useGoalItems } from "hooks/useGoalItems";
-import { useGoals } from "hooks/useGoals";
-import useIsOpen from "hooks/useIsOpen";
+import { Spacing } from "components/shared/Spacing";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
+import Goal from "./Goal";
 
 export default function Page() {
-  const { data } = useGoals();
-  const { data: goalItems } = useGoalItems();
-  const { isOpen, toggle } = useIsOpen();
   const { navigate } = useNavigation<HomeStackNavigationType>();
   // const db = useDB();
 
   // useEffect(() => {
   //   (async () => {
   //     if (!db) return;
-  //     await mutateItem(
-  //       db!,
-  //       `INSERT INTO ${tables.goalsItems} (goalId, date, point, memo) VALUES (?,?,?,?)`,
-  //       [2, "2023-08-01", 2, "오늘도 잘했다 수고많았어 내 자신!"]
-  //     );
+  //     await mutateItem(db!, `DELETE FROM ${tables.goals} WHERE id = ${5}`, []);
   //   })();
   // }, []);
 
   return (
     <Container>
-      <PlusButton onPress={() => navigate("AddGoal")}>
-        <PlusSvg fill={colors.dark} />
-      </PlusButton>
+      <View style={{ marginLeft: 20, marginRight: 20 }}>
+        <PlusButton onPress={() => navigate("AddGoal")}>
+          <PlusSvg fill={colors.dark} />
+        </PlusButton>
+        <Spacing size={10} />
+        <Goal />
+      </View>
     </Container>
   );
 }
@@ -37,7 +34,7 @@ export default function Page() {
 const Container = styled.SafeAreaView`
   display: flex;
   flex: 1;
-  margin: 20px;
+  background-color: ${colors.white};
 `;
 
 const PlusButton = styled.Pressable`

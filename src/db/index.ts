@@ -110,7 +110,7 @@ export function mutateItem(
         params,
         function (tx, res) {
           console.log("Results", res.rowsAffected, res);
-          resolve({});
+          resolve({ id: res.insertId, ...params });
         },
         function (tx, error): any {
           reject(error);

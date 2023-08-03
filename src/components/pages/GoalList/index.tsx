@@ -10,9 +10,6 @@ export default function Page() {
       <Pressable onPress={() => goBack()} style={{ padding: 20 }}>
         <Text>Item</Text>
       </Pressable>
-      <Pressable onPress={() => push("AddGoal")} style={{ padding: 20 }}>
-        <Text>다음</Text>
-      </Pressable>
     </SafeAreaView>
   );
 }

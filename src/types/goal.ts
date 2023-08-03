@@ -1,9 +1,9 @@
 export interface Goal {
   id: string;
   title: string;
-  startAt: number;
-  endAt: number;
-  items: Item[];
+  startAt: Date;
+  endAt: Date;
+  items?: Item[];
 }
 
 export type Item = {
