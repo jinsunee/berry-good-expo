@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import CloseSvg from "assets/svgs/close.svg";
+import { DismissKeyboard } from "components/shared/DismissKeyboard";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
@@ -9,22 +10,25 @@ export default function Page() {
   const { goBack } = useNavigation();
 
   return (
-    <StyledSafeAreaView>
-      <Flex>
-        <Title>목표 추가</Title>
-        <CloseButton onPress={goBack}>
-          <CloseSvg fill={colors.dark} />
-        </CloseButton>
-      </Flex>
-      <View style={{ padding: 20 }}>
-        <AddGoalForm />
-      </View>
-    </StyledSafeAreaView>
+    <DismissKeyboard>
+      <StyledSafeAreaView>
+        <Flex>
+          <Title>목표 추가</Title>
+          <CloseButton onPress={goBack}>
+            <CloseSvg fill={colors.dark} />
+          </CloseButton>
+        </Flex>
+        <View style={{ padding: 20, flex: 1 }}>
+          <AddGoalForm />
+        </View>
+      </StyledSafeAreaView>
+    </DismissKeyboard>
   );
 }
 
 const StyledSafeAreaView = styled.SafeAreaView`
   background-color: ${colors.secondary[0]};
+  flex: 1;
 `;
 
 const Flex = styled.View`

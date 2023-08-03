@@ -36,7 +36,7 @@ export default function HomeStackNavigator() {
       <Stack.Screen
         name="AddGoal"
         component={AddGoal}
-        options={{ headerShown: false, presentation: "modal" }}
+        options={{ headerShown: false, presentation: "fullScreenModal" }}
       />
     </Stack.Navigator>
   );
