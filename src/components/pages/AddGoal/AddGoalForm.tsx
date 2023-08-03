@@ -66,7 +66,7 @@ export function AddGoalForm() {
           isActive={isActiveSubmitButton}
         >
           <Text
-            style={{ color: colors.white, fontSize: 18, fontWeight: "bold" }}
+            style={{ color: colors.white, fontSize: 22, fontWeight: "bold" }}
           >
             저장
           </Text>
