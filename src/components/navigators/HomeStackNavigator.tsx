@@ -6,12 +6,14 @@ import AddGoal from "components/pages/AddGoal";
 import GoalList from "components/pages/GoalList";
 import Home from "components/pages/Home";
 import Item from "components/pages/Item";
+import UpdateGoal from "components/pages/UpdateGoal";
 
-type HomeStackParamList = {
+export type HomeStackParamList = {
   Home: undefined;
   Item: undefined;
   GoalList: undefined;
   AddGoal: undefined;
+  UpdateGoal: { id: number };
 };
 
 export type HomeStackNavigationType = NativeStackNavigationProp<
@@ -42,6 +44,11 @@ export default function HomeStackNavigator() {
       <Stack.Screen
         name="AddGoal"
         component={AddGoal}
+        options={{ headerShown: false, presentation: "fullScreenModal" }}
+      />
+      <Stack.Screen
+        name="UpdateGoal"
+        component={UpdateGoal}
         options={{ headerShown: false, presentation: "fullScreenModal" }}
       />
     </Stack.Navigator>

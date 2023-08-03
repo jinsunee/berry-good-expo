@@ -1,18 +1,25 @@
-import { useNavigation } from "@react-navigation/native";
-import { useMemo, useState } from "react";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { HomeStackParamList } from "components/navigators/HomeStackNavigator";
+import { useGoals } from "hooks/useGoals";
+import { useEffect, useMemo, useState } from "react";
 import { Text, View } from "react-native";
 import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
 import DatePicker from "./DatePicker";
-import { useAddGoal } from "./useAddGoal";
+import DeleteButton from "./DeleteButton";
+import { useUpdateGoal } from "./useUpdateGoal";
 
-export function AddGoalForm() {
-  const { mutateAsync: onAddGoal } = useAddGoal();
+export function UpdateGoalForm() {
+  const { mutateAsync: onUpdateGoal } = useUpdateGoal();
   const { goBack } = useNavigation();
+  const { data: goals } = useGoals();
+  const route = useRoute<RouteProp<HomeStackParamList>>();
 
   const [goal, setGoal] = useState<string>();
   const [startAt, setStartAt] = useState<Date>();
   const [endAt, setEndAt] = useState<Date>();
+
+  const id = route.params?.id;
 
   const isActiveSubmitButton = useMemo(
     () => !!goal && !!startAt && !!endAt,
@@ -22,9 +29,18 @@ export function AddGoalForm() {
   const handleSubmit = async () => {
     if (!goal || !startAt || !endAt) return;
 
-    await onAddGoal({ title: goal, startAt, endAt });
+    await onUpdateGoal({ id: Number(id), title: goal, startAt, endAt });
     goBack();
   };
+
+  useEffect(() => {
+    const goal = goals?.find((goal) => goal.id === id);
+    if (!goal) return;
+
+    setGoal(goal.title);
+    setStartAt(new Date(goal.startAt));
+    setEndAt(new Date(goal.endAt));
+  }, []);
 
   return (
     <>
@@ -69,6 +85,7 @@ export function AddGoalForm() {
         </View>
       </Container>
       <BottomArea>
+        <DeleteButton />
         <SaveButton
           disabled={!isActiveSubmitButton}
           isActive={isActiveSubmitButton}
@@ -113,15 +130,9 @@ const BottomArea = styled.View`
   left: 20px;
   right: 20px;
   padding: 10px;
-`;
-
-const RemoveButton = styled.TouchableOpacity`
-  padding: 15px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  border: 1px solid ${colors.secondary[1]};
+  flex-direction: row;
+  gap: 10px;
 `;
 
 const SaveButton = styled.TouchableOpacity<{ isActive: boolean }>`

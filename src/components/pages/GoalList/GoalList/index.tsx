@@ -26,7 +26,7 @@ export function GoalList() {
             setFocusedGoal(goal);
             goBack();
           }}
-          onPressEdit={() => navigate("AddGoal")}
+          onPressEdit={() => navigate("UpdateGoal", { id: goal.id })}
         />
       ))}
     </Stack>
