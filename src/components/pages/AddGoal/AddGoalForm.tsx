@@ -1,6 +1,6 @@
 import TrashSvg from "assets/svgs/trash.svg";
-import { useReducer, useState } from "react";
-import { Text, View } from "react-native";
+import { useMemo, useReducer, useState } from "react";
+import { Keyboard, Text, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
@@ -10,12 +10,18 @@ export function AddGoalForm() {
   const [startAt, setStartAt] = useState<Date>();
   const [endAt, setEndAt] = useState<Date>();
 
+  const isActiveSubmitButton = useMemo(
+    () => !!goal && !!startAt && !!endAt,
+    [goal, startAt, endAt]
+  );
+
   return (
     <>
       <Container>
         <View>
           <Title>목표</Title>
           <StyledTextInput
+            value={goal}
             multiline={true}
             placeholder="목표를 입력해주세요."
             textAlignVertical="top"
@@ -55,7 +61,10 @@ export function AddGoalForm() {
         <RemoveButton>
           <TrashSvg fill={colors.dark} />
         </RemoveButton>
-        <SaveButton>
+        <SaveButton
+          disabled={isActiveSubmitButton}
+          isActive={isActiveSubmitButton}
+        >
           <Text
             style={{ color: colors.white, fontSize: 18, fontWeight: "bold" }}
           >
@@ -82,6 +91,11 @@ function DatePicker({
 }) {
   const [isShow, toggleShow] = useReducer((prev) => !prev, false);
 
+  const handlePressButton = () => {
+    toggleShow();
+    Keyboard.dismiss();
+  };
+
   const handleConfirm = (date: Date) => {
     setDate(date);
     toggleShow();
@@ -89,7 +103,7 @@ function DatePicker({
 
   return (
     <>
-      <StyledDate onPress={toggleShow}>
+      <StyledDate onPress={handlePressButton}>
         {date && <DateText>{date.toLocaleDateString()}</DateText>}
         {!date && <PlaceholderText>{placeholderText}</PlaceholderText>}
       </StyledDate>
@@ -170,12 +184,13 @@ const RemoveButton = styled.TouchableOpacity`
   border: 1px solid ${colors.secondary[1]};
 `;
 
-const SaveButton = styled.TouchableOpacity`
+const SaveButton = styled.Pressable<{ isActive: boolean }>`
   padding: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
   flex: 1;
-  background-color: ${colors.dark};
+  background-color: ${({ isActive }) =>
+    isActive ? colors.dark : colors.secondary[1]};
 `;
