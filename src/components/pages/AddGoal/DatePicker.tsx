@@ -1,7 +1,9 @@
+import moment from "moment";
 import { useReducer } from "react";
 import { Keyboard } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styled from "styled-components/native";
+import { dateFormat } from "../../../constants/date";
 import { colors } from "../../../utils/colors";
 
 export default function DatePicker({
@@ -32,7 +34,7 @@ export default function DatePicker({
   return (
     <>
       <StyledDate onPress={handlePressButton}>
-        {date && <DateText>{date.toLocaleDateString()}</DateText>}
+        {date && <DateText>{moment(date).format(dateFormat)}</DateText>}
         {!date && <PlaceholderText>{placeholderText}</PlaceholderText>}
       </StyledDate>
       <DateTimePickerModal

@@ -12,8 +12,8 @@ export const initDatabase = async (database: SQLite.WebSQLDatabase) => {
         `CREATE TABLE IF NOT EXISTS ${tables.goals} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
-        startAt DATE,
-        endAt DATE
+        startAt DATE NOT NULL,
+        endAt DATE NOT NULL
       );`,
         []
       );
