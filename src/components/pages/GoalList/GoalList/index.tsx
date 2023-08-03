@@ -13,9 +13,7 @@ import { colors } from "../../../../utils/colors";
 export function GoalList() {
   const { data: goals } = useGoals();
   const [focusedGoal, setFocusedGoal] = useRecoilState(focusedGoalAtom);
-  const { navigate } = useNavigation<HomeStackNavigationType>();
-
-  console.log("focusedGoal", focusedGoal);
+  const { navigate, goBack } = useNavigation<HomeStackNavigationType>();
 
   return (
     <Stack spacing={10}>
@@ -24,7 +22,10 @@ export function GoalList() {
           key={goal.id}
           {...goal}
           isFocused={focusedGoal?.id === goal.id}
-          onPressItem={() => setFocusedGoal(goal)}
+          onPressItem={() => {
+            setFocusedGoal(goal);
+            goBack();
+          }}
           onPressEdit={() => navigate("AddGoal")}
         />
       ))}
