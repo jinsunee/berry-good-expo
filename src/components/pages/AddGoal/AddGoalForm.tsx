@@ -1,11 +1,16 @@
+import { useNavigation } from "@react-navigation/native";
 import TrashSvg from "assets/svgs/trash.svg";
-import { useMemo, useReducer, useState } from "react";
-import { Keyboard, Text, View } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useMemo, useState } from "react";
+import { Text, View } from "react-native";
 import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
+import DatePicker from "./DatePicker";
+import { useAddGoal } from "./useAddGoal";
 
 export function AddGoalForm() {
+  const { mutateAsync: onAddGoal } = useAddGoal();
+  const { goBack } = useNavigation();
+
   const [goal, setGoal] = useState<string>();
   const [startAt, setStartAt] = useState<Date>();
   const [endAt, setEndAt] = useState<Date>();
@@ -14,6 +19,13 @@ export function AddGoalForm() {
     () => !!goal && !!startAt && !!endAt,
     [goal, startAt, endAt]
   );
+
+  const handleSubmit = async () => {
+    if (!goal || !startAt || !endAt) return;
+
+    await onAddGoal({ goal, startAt, endAt });
+    goBack();
+  };
 
   return (
     <>
@@ -62,8 +74,9 @@ export function AddGoalForm() {
           <TrashSvg fill={colors.dark} />
         </RemoveButton>
         <SaveButton
-          disabled={isActiveSubmitButton}
+          disabled={!isActiveSubmitButton}
           isActive={isActiveSubmitButton}
+          onPress={handleSubmit}
         >
           <Text
             style={{ color: colors.white, fontSize: 22, fontWeight: "bold" }}
@@ -72,52 +85,6 @@ export function AddGoalForm() {
           </Text>
         </SaveButton>
       </BottomArea>
-    </>
-  );
-}
-
-function DatePicker({
-  date,
-  setDate,
-  placeholderText,
-  minDate,
-  maxDate,
-}: {
-  date?: Date;
-  setDate: (date: Date) => void;
-  placeholderText?: string;
-  minDate?: Date;
-  maxDate?: Date;
-}) {
-  const [isShow, toggleShow] = useReducer((prev) => !prev, false);
-
-  const handlePressButton = () => {
-    toggleShow();
-    Keyboard.dismiss();
-  };
-
-  const handleConfirm = (date: Date) => {
-    setDate(date);
-    toggleShow();
-  };
-
-  return (
-    <>
-      <StyledDate onPress={handlePressButton}>
-        {date && <DateText>{date.toLocaleDateString()}</DateText>}
-        {!date && <PlaceholderText>{placeholderText}</PlaceholderText>}
-      </StyledDate>
-      <DateTimePickerModal
-        locale="ko"
-        isVisible={isShow}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={toggleShow}
-        confirmTextIOS="확인"
-        cancelTextIOS="취소"
-        maximumDate={maxDate}
-        minimumDate={minDate}
-      />
     </>
   );
 }
@@ -144,26 +111,6 @@ const StyledTextInput = styled.TextInput`
   height: 100px;
 `;
 
-const StyledDate = styled.Pressable`
-  background-color: ${colors.white};
-  flex: 1;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 0;
-`;
-
-const DateText = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: ${colors.dark};
-`;
-
-const PlaceholderText = styled(DateText)`
-  color: ${colors.secondary[1]};
-`;
-
 const BottomArea = styled.View`
   position: absolute;
   bottom: 20px;
@@ -184,7 +131,7 @@ const RemoveButton = styled.TouchableOpacity`
   border: 1px solid ${colors.secondary[1]};
 `;
 
-const SaveButton = styled.Pressable<{ isActive: boolean }>`
+const SaveButton = styled.TouchableOpacity<{ isActive: boolean }>`
   padding: 15px;
   display: flex;
   justify-content: center;

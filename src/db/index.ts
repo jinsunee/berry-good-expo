@@ -109,7 +109,7 @@ export function mutateItem(
         query,
         params,
         function (tx, res) {
-          console.log("Results", res.rowsAffected);
+          console.log("Results", res.rowsAffected, res);
           resolve({});
         },
         function (tx, error): any {
