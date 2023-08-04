@@ -13,7 +13,7 @@ export function UpdateGoalForm() {
   const { mutateAsync: onUpdateGoal } = useUpdateGoal();
   const { goBack } = useNavigation();
   const { data: goals } = useGoals();
-  const route = useRoute<RouteProp<HomeStackParamList>>();
+  const route = useRoute<RouteProp<HomeStackParamList, "UpdateGoal">>();
 
   const [goal, setGoal] = useState<string>();
   const [startAt, setStartAt] = useState<Date>();

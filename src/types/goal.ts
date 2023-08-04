@@ -8,6 +8,7 @@ export interface Goal {
 
 export type GoalItem = {
   id: string;
+  goalId: string;
   date: string;
   point: 3 | 2 | 1;
   memo: string;

@@ -13,7 +13,7 @@ export function useGoalItems() {
   const focusedGoal = useRecoilValue(focusedGoalAtom);
 
   return useQuery(
-    [goalItemsQueryKey, focusedGoal],
+    [goalItemsQueryKey, focusedGoal?.id],
     async () => {
       const result = await queryItems(
         db!,

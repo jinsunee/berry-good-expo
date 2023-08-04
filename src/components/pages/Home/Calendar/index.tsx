@@ -88,7 +88,7 @@ function GoalItem({ date }: { date: string }) {
   const goalItem = goalItems?.[date];
 
   const handleMove = () => {
-    navigate("Item");
+    navigate("Item", { date });
   };
 
   const renderCharacter = () => {
@@ -99,13 +99,13 @@ function GoalItem({ date }: { date: string }) {
     const point = goalItem?.point;
     switch (point) {
       case 1: {
-        return <GoodSvg width={45} height={50} />;
+        return <GoodSvg width={45} height={50} fill="#D6A5F4" />;
       }
       case 2: {
-        return <SoSoSvg width={45} height={50} />;
+        return <SoSoSvg width={45} height={50} fill="#FFAF65" />;
       }
       case 3: {
-        return <BadSvg width={45} height={50} />;
+        return <BadSvg width={45} height={50} fill="#95BCB5" />;
       }
     }
   };

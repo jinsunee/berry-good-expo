@@ -10,7 +10,7 @@ import UpdateGoal from "components/pages/UpdateGoal";
 
 export type HomeStackParamList = {
   Home: undefined;
-  Item: undefined;
+  Item: { date: string };
   GoalList: undefined;
   AddGoal: undefined;
   UpdateGoal: { id: number };
