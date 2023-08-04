@@ -5,19 +5,18 @@ import GoodSvg from "assets/svgs/good.svg";
 import SoSoSvg from "assets/svgs/soso.svg";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
 import { Spacing } from "components/shared/Spacing";
+import { useGoal } from "hooks/useGoal";
 import { useGoalItems } from "hooks/useGoalItems";
 import moment from "moment";
 import React from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
-import { focusedGoalAtom } from "../../../../states";
 import { colors } from "../../../../utils/colors";
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 function Calendar() {
-  const focusedGoal = useRecoilValue(focusedGoalAtom);
+  const { goal: focusedGoal } = useGoal();
   const startAt = focusedGoal?.startAt;
   const endAt = focusedGoal?.endAt;
 

@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
 import { GoalItem } from "types/goal";
 import { tables } from "../constants/tables";
 import { queryItems } from "../db/index";
-import { focusedGoalAtom } from "../states";
 import { useDB } from "./useDB";
+import { useGoal } from "./useGoal";
 
 export const goalItemsQueryKey = "goalsItems";
 
 export function useGoalItems() {
   const db = useDB();
-  const focusedGoal = useRecoilValue(focusedGoalAtom);
+  const { goal: focusedGoal } = useGoal();
 
   return useQuery(
     [goalItemsQueryKey, focusedGoal?.id],

@@ -1,16 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
 import { Badge } from "components/shared/Badge";
-import { useGoals } from "hooks/useGoals";
+import { useGoal } from "hooks/useGoal";
 import { View } from "react-native";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
-import { focusedGoalAtom } from "../../../../states";
 import { colors } from "../../../../utils/colors";
 
 export default function Goal() {
-  useGoals();
-  const focusedGoal = useRecoilValue(focusedGoalAtom);
+  const { goal: focusedGoal } = useGoal();
   const { navigate } = useNavigation<HomeStackNavigationType>();
 
   return (

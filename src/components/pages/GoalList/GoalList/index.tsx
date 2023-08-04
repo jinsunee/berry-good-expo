@@ -2,17 +2,16 @@ import { useNavigation } from "@react-navigation/native";
 import EditSvg from "assets/svgs/edit.svg";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
 import { Stack } from "components/shared/Stack";
+import { useGoal } from "hooks/useGoal";
 import { useGoals } from "hooks/useGoals";
 import { View } from "react-native";
-import { useRecoilState } from "recoil";
 import styled from "styled-components/native";
-import { focusedGoalAtom } from "../../../../states";
 import { Goal } from "../../../../types/goal";
 import { colors } from "../../../../utils/colors";
 
 export function GoalList() {
   const { data: goals } = useGoals();
-  const [focusedGoal, setFocusedGoal] = useRecoilState(focusedGoalAtom);
+  const { goal: focusedGoal, setGoal } = useGoal();
   const { navigate, goBack } = useNavigation<HomeStackNavigationType>();
 
   return (
@@ -23,7 +22,7 @@ export function GoalList() {
           {...goal}
           isFocused={focusedGoal?.id === goal.id}
           onPressItem={() => {
-            setFocusedGoal(goal);
+            setGoal(goal.id);
             goBack();
           }}
           onPressEdit={() => navigate("UpdateGoal", { id: goal.id })}

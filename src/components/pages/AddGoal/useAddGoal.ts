@@ -6,12 +6,12 @@ import moment from "moment";
 import { useSetRecoilState } from "recoil";
 import { tables } from "../../../constants/tables";
 import { mutateItem } from "../../../db";
-import { focusedGoalAtom } from "../../../states";
+import { focusedGoalIdAtom } from "../../../states";
 import { Goal } from "../../../types/goal";
 
 export function useAddGoal() {
   const db = useDB();
-  const setFocusedGoal = useSetRecoilState(focusedGoalAtom);
+  const setFocusedGoalId = useSetRecoilState(focusedGoalIdAtom);
 
   return useMutation(
     async ({ title, startAt, endAt }: Omit<Goal, "id">) => {
@@ -34,7 +34,7 @@ export function useAddGoal() {
     },
     {
       onSuccess: (result: Goal) => {
-        setFocusedGoal(result);
+        setFocusedGoalId(result.id);
         queryClient.setQueryData<Goal[]>([goalsQueryKey], (prev) => [
           ...(prev ?? []),
           result,

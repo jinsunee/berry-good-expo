@@ -12,7 +12,7 @@ export default function DeleteButton() {
   const { mutateAsync: onDeleteGoal } = useDeleteGoal();
   const { isOpen, toggle } = useIsOpen();
   const { goBack } = useNavigation();
-  const route = useRoute<RouteProp<HomeStackParamList>>();
+  const route = useRoute<RouteProp<HomeStackParamList, "UpdateGoal">>();
   const id = route.params?.id;
 
   return (

@@ -11,7 +11,14 @@ export function useDeleteGoal() {
 
   return useMutation(
     async ({ id }: Pick<Goal, "id">) => {
-      await mutateItem(db!, `DELETE FROM ${tables.goals} WHERE id = ?`, [id]);
+      await Promise.all([
+        await mutateItem(db!, `DELETE FROM ${tables.goals} WHERE id = ?`, [id]),
+        await mutateItem(
+          db!,
+          `DELETE FROM ${tables.goalsItems} WHERE goalId = ?`,
+          [id]
+        ),
+      ]);
     },
     {
       onSuccess: async () => {

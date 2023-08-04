@@ -2,14 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useSetRecoilState } from "recoil";
 import { tables } from "../constants/tables";
 import { queryItems } from "../db/index";
-import { focusedGoalAtom } from "../states/index";
+import { focusedGoalIdAtom } from "../states";
 import { useDB } from "./useDB";
 
 export const goalsQueryKey = "goals";
 
 export function useGoals() {
   const db = useDB();
-  const setFocusedGoal = useSetRecoilState(focusedGoalAtom);
+  const setFocusedGoalId = useSetRecoilState(focusedGoalIdAtom);
 
   return useQuery(
     [goalsQueryKey],
@@ -19,7 +19,7 @@ export function useGoals() {
         return [];
       }
 
-      setFocusedGoal(result[0]);
+      setFocusedGoalId(result[0].id);
       return result;
     },
     { enabled: db != null }
