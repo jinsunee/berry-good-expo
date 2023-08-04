@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
+import { GoalItem } from "types/goal";
 import { tables } from "../constants/tables";
 import { queryItems } from "../db/index";
 import { focusedGoalAtom } from "../states";
@@ -18,7 +19,13 @@ export function useGoalItems() {
         db!,
         `SELECT * FROM ${tables.goalsItems} WHERE goalId = ${focusedGoal?.id}`
       );
-      return result;
+
+      return result.reduce((acc, cur) => {
+        return {
+          ...acc,
+          [cur.date]: cur,
+        };
+      }, {}) as Record<string, GoalItem>;
     },
     { enabled: db != null || focusedGoal != null }
   );

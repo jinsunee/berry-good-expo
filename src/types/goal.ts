@@ -3,11 +3,12 @@ export interface Goal {
   title: string;
   startAt: Date;
   endAt: Date;
-  items?: Item[];
+  items?: GoalItem[];
 }
 
-export type Item = {
+export type GoalItem = {
   id: string;
+  date: string;
   point: 3 | 2 | 1;
   memo: string;
 };

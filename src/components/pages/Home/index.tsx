@@ -5,6 +5,7 @@ import { Spacing } from "components/shared/Spacing";
 import { View } from "react-native";
 import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
+import Calendar from "./Calendar";
 import Goal from "./Goal";
 
 export default function Page() {
@@ -26,6 +27,8 @@ export default function Page() {
         </PlusButton>
         <Spacing size={10} />
         <Goal />
+        <Spacing size={20} />
+        <Calendar />
       </View>
     </Container>
   );
