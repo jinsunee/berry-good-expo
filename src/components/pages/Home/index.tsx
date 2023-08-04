@@ -17,10 +17,10 @@ export default function Page() {
   const isExistedGoals = useMemo(() => (goals?.length ?? 0) > 0, [goals]);
 
   useEffect(() => {
-    if (!isExistedGoals) {
+    if (goals && !isExistedGoals) {
       navigate("AddGoal");
     }
-  }, []);
+  }, [goals, isExistedGoals]);
 
   return (
     <Container>

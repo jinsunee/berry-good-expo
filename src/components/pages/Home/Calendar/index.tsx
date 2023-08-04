@@ -10,6 +10,7 @@ import { useGoalItems } from "hooks/useGoalItems";
 import moment from "moment";
 import React from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
+import Toast from "react-native-toast-message";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
 import { displayModeAtom } from "../../../../states";
@@ -152,6 +153,14 @@ function GoalItem({ date, index }: { date: string; index: number }) {
   const goalItem = goalItems?.[date];
 
   const handleMove = () => {
+    if (moment(date) > moment()) {
+      Toast.show({
+        type: "error",
+        text1: "오늘 이후는 기록할 수 없어요!",
+        topOffset: 100,
+      });
+      return;
+    }
     navigate("Item", { date });
   };
 
