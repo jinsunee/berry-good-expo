@@ -1,7 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import BadSvg from "assets/svgs/bad1.svg";
 import EmptySvg from "assets/svgs/empty-item.svg";
 import GoodSvg from "assets/svgs/good.svg";
 import SoSoSvg from "assets/svgs/soso.svg";
+import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
 import { Spacing } from "components/shared/Spacing";
 import { useGoalItems } from "hooks/useGoalItems";
 import moment from "moment";
@@ -81,41 +83,38 @@ function Calendar() {
 
 function GoalItem({ date }: { date: string }) {
   const { data: goalItems } = useGoalItems();
+  const { navigate } = useNavigation<HomeStackNavigationType>();
 
   const goalItem = goalItems?.[date];
 
-  if (!goalItem) {
-    return (
-      <TouchableOpacity>
-        <EmptySvg width={45} height={50} />
-      </TouchableOpacity>
-    );
-  }
+  const handleMove = () => {
+    navigate("Item");
+  };
 
-  const point = goalItem?.point;
-  switch (point) {
-    case 1: {
-      return (
-        <TouchableOpacity>
-          <GoodSvg width={45} height={50} />
-        </TouchableOpacity>
-      );
+  const renderCharacter = () => {
+    if (!goalItem) {
+      return <EmptySvg width={45} height={50} />;
     }
-    case 2: {
-      return (
-        <TouchableOpacity>
-          <SoSoSvg width={45} height={50} />
-        </TouchableOpacity>
-      );
+
+    const point = goalItem?.point;
+    switch (point) {
+      case 1: {
+        return <GoodSvg width={45} height={50} />;
+      }
+      case 2: {
+        return <SoSoSvg width={45} height={50} />;
+      }
+      case 3: {
+        return <BadSvg width={45} height={50} />;
+      }
     }
-    case 3: {
-      return (
-        <TouchableOpacity>
-          <BadSvg width={45} height={50} />
-        </TouchableOpacity>
-      );
-    }
-  }
+  };
+
+  return (
+    <TouchableOpacity onPress={handleMove}>
+      {renderCharacter()}
+    </TouchableOpacity>
+  );
 }
 
 const FlexColumn = styled.View`
