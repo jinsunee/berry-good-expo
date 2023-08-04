@@ -29,12 +29,24 @@ export function ItemInputs() {
   } = useController({
     name: "memo",
     control,
-    rules: { required: true },
     defaultValue: goalItem?.memo,
   });
 
   return (
     <>
+      <Title>메모</Title>
+      <StyledTextInput
+        value={memo}
+        multiline={true}
+        placeholder="내용을 입력해주세요."
+        textAlignVertical="top"
+        placeholderTextColor={colors.secondary[1]}
+        autoFocus={false}
+        onChangeText={(text) => onChangeMemo(text)}
+      />
+
+      <Spacing size={30} />
+
       <PointContainer>
         <PointText>할 일을 잘 마치셨나요?</PointText>
         <Spacing size={20} />
@@ -62,19 +74,6 @@ export function ItemInputs() {
           </Pressable>
         </View>
       </PointContainer>
-
-      <Spacing size={30} />
-
-      <Title>메모</Title>
-      <StyledTextInput
-        value={memo}
-        multiline={true}
-        placeholder="내용을 입력해주세요."
-        textAlignVertical="top"
-        placeholderTextColor={colors.secondary[1]}
-        autoFocus={false}
-        onChangeText={(text) => onChangeMemo(text)}
-      />
     </>
   );
 }

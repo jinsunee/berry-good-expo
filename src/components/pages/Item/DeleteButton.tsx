@@ -36,7 +36,7 @@ export default function DeleteButton() {
         }}
       >
         <Text style={{ color: colors.dark, fontSize: 22, fontWeight: "bold" }}>
-          목표를 삭제하시겠습니까?
+          기록을 삭제하시겠습니까?
         </Text>
       </Dialog>
     </>

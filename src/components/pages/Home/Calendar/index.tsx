@@ -9,17 +9,20 @@ import { useGoalItems } from "hooks/useGoalItems";
 import moment from "moment";
 import React from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
+import { focusedGoalAtom } from "../../../../states";
 import { colors } from "../../../../utils/colors";
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 function Calendar() {
-  const startAt = "2023-08-01";
-  const endAt = "2023-10-30";
+  const focusedGoal = useRecoilValue(focusedGoalAtom);
+  const startAt = focusedGoal?.startAt;
+  const endAt = focusedGoal?.endAt;
 
   // startAt이 포함된 주부터 endAt이 포함된 주까지 O를 그린다. 그대신 startAt 이전과 endAt 이후는 공백으로 채운다.
-  const getWeeks = (startAt: string, endAt: string) => {
+  const getWeeks = (startAt?: string, endAt?: string) => {
     const _startAt = moment(startAt);
     const _endAt = moment(endAt);
 
@@ -36,14 +39,16 @@ function Calendar() {
     // startAt~endAt까지 O로 채우기
     const currentDate = _startAt.clone();
     const endAtDate = _endAt.clone();
+    let index = 1;
 
     while (currentDate <= endAtDate) {
       dates.push(
         <Item key={currentDate.format("YYYY-MM-DD")}>
-          <GoalItem date={currentDate.format("YYYY-MM-DD")} />
+          <GoalItem date={currentDate.format("YYYY-MM-DD")} index={index} />
         </Item>
       );
       currentDate.add(1, "days");
+      index++;
     }
 
     // endAt~7까지 공백으로 채우기
@@ -74,14 +79,19 @@ function Calendar() {
       <Spacing size={10} />
       <ScrollView>
         <Spacing size={10} />
-        <FlexColumn>{getWeeks(startAt, endAt)}</FlexColumn>
+        <FlexColumn>
+          {getWeeks(
+            moment(startAt).format("YYYY-MM-DD"),
+            moment(endAt).format("YYYY-MM-DD")
+          )}
+        </FlexColumn>
         <Spacing size={400} />
       </ScrollView>
     </View>
   );
 }
 
-function GoalItem({ date }: { date: string }) {
+function GoalItem({ date, index }: { date: string; index: number }) {
   const { data: goalItems } = useGoalItems();
   const { navigate } = useNavigation<HomeStackNavigationType>();
 
@@ -112,6 +122,8 @@ function GoalItem({ date }: { date: string }) {
 
   return (
     <TouchableOpacity onPress={handleMove}>
+      {/* <GoalItemDate>{moment(date).format("MM/DD")}</GoalItemDate> */}
+      <GoalItemDate>{index}일차</GoalItemDate>
       {renderCharacter()}
     </TouchableOpacity>
   );
@@ -136,6 +148,13 @@ const Item = styled.View`
 const DateText = styled.Text`
   font-size: 14px;
   font-weight: bold;
+  color: ${colors.dark};
+`;
+
+const GoalItemDate = styled.Text`
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
   color: ${colors.dark};
 `;
 
