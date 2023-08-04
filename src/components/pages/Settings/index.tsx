@@ -1,15 +1,20 @@
 import { Spacing } from "components/shared/Spacing";
 import Constants from "expo-constants";
-import { useState } from "react";
 import { Pressable, Switch } from "react-native";
+import { useRecoilState } from "recoil";
 import styled from "styled-components/native";
+import { displayModeAtom } from "../../../states";
 import { colors } from "../../../utils/colors";
 
 export default function Page() {
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [displayMode, setDisplayMode] = useRecoilState(displayModeAtom);
 
   const toggleSwitch = () => {
-    setIsEnabled((previousState) => !previousState);
+    if (displayMode === "calendar") {
+      setDisplayMode("normal");
+    } else {
+      setDisplayMode("calendar");
+    }
   };
 
   return (
@@ -27,10 +32,12 @@ export default function Page() {
                   false: "#E0E0E0",
                   true: colors.dark,
                 }}
-                thumbColor={isEnabled ? colors.primary : "#fff"}
+                thumbColor={
+                  displayMode === "calendar" ? colors.primary : "#fff"
+                }
                 ios_backgroundColor="#E0E0E0"
                 onValueChange={toggleSwitch}
-                value={isEnabled}
+                value={displayMode === "calendar"}
               />
             }
           />
@@ -76,6 +83,7 @@ function Item({
 }
 
 const StyledSafeAreaView = styled.SafeAreaView`
+  background-color: ${colors.white};
   flex: 1;
 `;
 
