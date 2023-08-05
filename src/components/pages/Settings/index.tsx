@@ -48,7 +48,7 @@ export default function Page() {
           <Item
             title="버전"
             rightElement={
-              <ItemContent>{Constants.expoConfig?.version}</ItemContent>
+              <ItemContent>v {Constants.expoConfig?.version}</ItemContent>
             }
           />
           <Item

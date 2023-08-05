@@ -1,20 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
-import BadSvg from "assets/svgs/bad1.svg";
-import EmptySvg from "assets/svgs/empty-item.svg";
-import GoodSvg from "assets/svgs/good.svg";
-import SoSoSvg from "assets/svgs/soso.svg";
-import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
 import { Spacing } from "components/shared/Spacing";
 import { useGoal } from "hooks/useGoal";
-import { useGoalItems } from "hooks/useGoalItems";
 import moment from "moment";
 import React from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import Toast from "react-native-toast-message";
+import { ScrollView, View } from "react-native";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
 import { displayModeAtom } from "../../../../states";
 import { colors } from "../../../../utils/colors";
+import { GoalItem } from "./GoalItem";
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -145,59 +138,9 @@ function Calendar() {
   );
 }
 
-function GoalItem({ date, index }: { date: string; index: number }) {
-  const displayMode = useRecoilValue(displayModeAtom);
-  const { data: goalItems } = useGoalItems();
-  const { navigate } = useNavigation<HomeStackNavigationType>();
-
-  const goalItem = goalItems?.[date];
-
-  const handleMove = () => {
-    if (moment(date) > moment()) {
-      Toast.show({
-        type: "error",
-        text1: "오늘 이후는 기록할 수 없어요!",
-        topOffset: 100,
-      });
-      return;
-    }
-    navigate("Item", { date });
-  };
-
-  const renderCharacter = () => {
-    if (!goalItem) {
-      return <EmptySvg width={45} height={50} />;
-    }
-
-    const point = goalItem?.point;
-    switch (point) {
-      case 1: {
-        return <GoodSvg width={45} height={50} fill="#D6A5F4" />;
-      }
-      case 2: {
-        return <SoSoSvg width={45} height={50} fill="#FFAF65" />;
-      }
-      case 3: {
-        return <BadSvg width={45} height={50} fill="#95BCB5" />;
-      }
-    }
-  };
-
-  return (
-    <TouchableOpacity onPress={handleMove}>
-      {displayMode === "calendar" && (
-        <GoalItemDate>{moment(date).format("M/D")}</GoalItemDate>
-      )}
-      {displayMode === "normal" && <GoalItemDate>{index}일차</GoalItemDate>}
-      {renderCharacter()}
-    </TouchableOpacity>
-  );
-}
-
 const FlexColumn = styled.View`
   flex-direction: column;
   gap: 10px;
-  max-width: 500px;
 `;
 
 const Flex = styled.View`
@@ -213,13 +156,6 @@ const Item = styled.View`
 const DateText = styled.Text`
   font-size: 14px;
   font-weight: bold;
-  color: ${colors.dark};
-`;
-
-const GoalItemDate = styled.Text`
-  text-align: center;
-  font-size: 12px;
-  font-weight: 500;
   color: ${colors.dark};
 `;
 

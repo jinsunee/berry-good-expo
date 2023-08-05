@@ -2,14 +2,14 @@
   "expo": {
     "name": "berry-good",
     "slug": "berry-good",
-    "version": "1.0.0",
-    "orientation": "portrait",
+    "version": "0.0.1",
+    "orientation": "default",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "portrait",
     "splash": {
       "image": "./assets/splash1.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#D6A5F4"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
