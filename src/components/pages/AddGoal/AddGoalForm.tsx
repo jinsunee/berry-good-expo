@@ -11,7 +11,7 @@ export function AddGoalForm() {
   const { goBack } = useNavigation();
 
   const [goal, setGoal] = useState<string>();
-  const [startAt, setStartAt] = useState<Date>();
+  const [startAt, setStartAt] = useState<Date>(new Date());
   const [endAt, setEndAt] = useState<Date>();
 
   const isActiveSubmitButton = useMemo(
@@ -50,12 +50,7 @@ export function AddGoalForm() {
               alignItems: "center",
             }}
           >
-            <DatePicker
-              date={startAt}
-              setDate={setStartAt}
-              placeholderText="시작하는 날"
-              maxDate={endAt}
-            />
+            <DatePicker date={startAt} setDate={setStartAt} maxDate={endAt} />
             <Text style={{ fontSize: 25, marginLeft: 10, marginRight: 10 }}>
               -
             </Text>

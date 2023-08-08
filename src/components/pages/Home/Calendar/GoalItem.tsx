@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import BadSvg from "assets/svgs/bad1.svg";
-import EmptySvg from "assets/svgs/empty-item.svg";
 import GoodSvg from "assets/svgs/good.svg";
 import SoSoSvg from "assets/svgs/soso.svg";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
+import { useDisplayMode } from "components/pages/Settings/DisplayModeToggleButton/useDisplayMode";
 import { Spacing } from "components/shared/Spacing";
 import * as Device from "expo-device";
 import { useGoalItems } from "hooks/useGoalItems";
@@ -11,17 +11,15 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Dimensions, ScaledSize, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
-import { displayModeAtom } from "../../../../states";
 import { colors } from "../../../../utils/colors";
 
 export function GoalItem({ date, index }: { date: string; index: number }) {
-  const displayMode = useRecoilValue(displayModeAtom);
+  const { displayMode } = useDisplayMode();
   const { data: goalItems } = useGoalItems();
   const { navigate } = useNavigation<HomeStackNavigationType>();
 
-  const [size, setSize] = useState<number>();
+  const [size, setSize] = useState<number>(0);
   const [screenSize, setScreenSize] = useState<number>(
     Dimensions.get("screen").width
   );
@@ -39,7 +37,6 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
 
   useEffect(() => {
     (async () => {
-      console.log("screenSize", screenSize);
       const deviceInfo = await Device.getDeviceTypeAsync();
       if (deviceInfo === Device.DeviceType.TABLET) {
         setSize(screenSize / 7 - 20);
@@ -63,7 +60,7 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
 
   const renderCharacter = () => {
     if (!goalItem) {
-      return <EmptySvg width={size} height={size} />;
+      return <EmptyItem width={size} height={size} />;
     }
 
     const point = goalItem?.point;
@@ -97,4 +94,11 @@ const StyledText = styled.Text`
   font-size: 12px;
   font-weight: 500;
   color: ${colors.dark};
+`;
+
+const EmptyItem = styled.View<{ width: number; height: number }>`
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  background-color: ${colors.secondary[0]};
+  border-radius: 50%;
 `;

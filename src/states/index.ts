@@ -5,7 +5,8 @@ export const focusedGoalIdAtom = atom<number | null>({
   default: null,
 });
 
-export const displayModeAtom = atom<"calendar" | "normal">({
+export type DisplayMode = "calendar" | "normal";
+export const displayModeAtom = atom<DisplayMode | null>({
   key: "displayMode",
-  default: "normal",
+  default: null,
 });

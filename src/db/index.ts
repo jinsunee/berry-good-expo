@@ -13,7 +13,7 @@ export const initDatabase = async (database: SQLite.WebSQLDatabase) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         startAt DATE NOT NULL,
-        endAt DATE NOT NULL
+        endAt DATE
       );`,
         []
       );
@@ -27,16 +27,6 @@ export const initDatabase = async (database: SQLite.WebSQLDatabase) => {
         memo TEXT,
         FOREIGN KEY (goalId) REFERENCES goals(id) 
       );`,
-        []
-      );
-
-      txn.executeSql(
-        `CREATE TABLE IF NOT EXISTS ${tables.settings} 
-        (
-          id INTEGER PRIMARY KEY AUTOINCREMENT, 
-          theme TEXT,
-          view TEXT
-        );`,
         []
       );
     },
@@ -119,3 +109,13 @@ export function mutateItem(
     });
   });
 }
+
+// txn.executeSql(
+//   `CREATE TABLE IF NOT EXISTS ${tables.settings}
+//   (
+//     id INTEGER PRIMARY KEY AUTOINCREMENT,
+//     theme TEXT,
+//     view TEXT
+//   );`,
+//   []
+// );

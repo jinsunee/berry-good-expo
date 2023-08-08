@@ -43,6 +43,8 @@ export function ItemInputs() {
         placeholderTextColor={colors.secondary[1]}
         autoFocus={false}
         onChangeText={(text) => onChangeMemo(text)}
+        blurOnSubmit={true}
+        returnKeyType="done"
       />
 
       <Spacing size={30} />
