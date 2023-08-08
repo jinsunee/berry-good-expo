@@ -18,7 +18,7 @@ export function useUpdateGoal() {
         [
           title,
           moment(startAt).format("YYYY-MM-DD"),
-          moment(endAt).format("YYYY-MM-DD"),
+          endAt ? moment(endAt).format("YYYY-MM-DD") : null,
           id,
         ]
       );

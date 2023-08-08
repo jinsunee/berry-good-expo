@@ -8,6 +8,10 @@ export async function openDatabase(): Promise<SQLite.WebSQLDatabase> {
 export const initDatabase = async (database: SQLite.WebSQLDatabase) => {
   database.transaction(
     (txn) => {
+      // 원래 있던 테이블 삭제
+      // txn.executeSql(`DROP TABLE IF EXISTS ${tables.goals}`, []);
+      // txn.executeSql(`DROP TABLE IF EXISTS ${tables.goalsItems}`, []);
+
       txn.executeSql(
         `CREATE TABLE IF NOT EXISTS ${tables.goals} (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

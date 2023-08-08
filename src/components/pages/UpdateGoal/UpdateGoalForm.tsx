@@ -39,7 +39,9 @@ export function UpdateGoalForm() {
 
     setGoal(goal.title);
     setStartAt(new Date(goal.startAt));
-    setEndAt(new Date(goal.endAt));
+    if (goal.endAt) {
+      setEndAt(new Date(goal.endAt));
+    }
   }, []);
 
   return (

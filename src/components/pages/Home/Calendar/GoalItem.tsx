@@ -8,8 +8,8 @@ import { Spacing } from "components/shared/Spacing";
 import * as Device from "expo-device";
 import { useGoalItems } from "hooks/useGoalItems";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { Dimensions, ScaledSize, TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import styled from "styled-components/native";
 import { colors } from "../../../../utils/colors";
@@ -20,31 +20,19 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
   const { navigate } = useNavigation<HomeStackNavigationType>();
 
   const [size, setSize] = useState<number>(0);
-  const [screenSize, setScreenSize] = useState<number>(
-    Dimensions.get("screen").width
-  );
 
   const goalItem = goalItems?.[date];
-
-  useEffect(() => {
-    Dimensions.addEventListener(
-      "change",
-      ({ screen: { width } }: { window: ScaledSize; screen: ScaledSize }) => {
-        setScreenSize(width);
-      }
-    );
-  });
 
   useEffect(() => {
     (async () => {
       const deviceInfo = await Device.getDeviceTypeAsync();
       if (deviceInfo === Device.DeviceType.TABLET) {
-        setSize(screenSize / 7 - 20);
+        setSize(70);
       } else {
         setSize(45);
       }
     })();
-  }, [screenSize]);
+  }, []);
 
   const handleMove = () => {
     if (moment(date) > moment()) {
@@ -58,7 +46,7 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
     navigate("Item", { date });
   };
 
-  const renderCharacter = () => {
+  const renderCharacter = useCallback(() => {
     if (!goalItem) {
       return <EmptyItem width={size} height={size} />;
     }
@@ -75,7 +63,7 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
         return <BadSvg width={size} height={size} fill="#95BCB5" />;
       }
     }
-  };
+  }, [size, goalItem]);
 
   return (
     <TouchableOpacity onPress={handleMove}>

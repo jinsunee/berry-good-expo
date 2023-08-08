@@ -149,7 +149,7 @@ function Calendar() {
             <MonthHeaderYear>{year}</MonthHeaderYear>
             <MonthHeaderMonth>{month}</MonthHeaderMonth>
           </MonthHeader>
-          {getCalendar(startAt, endAt)}
+          <CalendarColumn>{getCalendar(startAt, endAt)}</CalendarColumn>
         </>
       );
     },
@@ -183,6 +183,7 @@ function Calendar() {
         ListFooterComponent={<Spacing size={400} />}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.5} // 스크롤이 목록의 하단 50% 부분에 도달하면 호출
+        ItemSeparatorComponent={() => <Spacing size={10} />}
       />
     </View>
   );
@@ -190,6 +191,10 @@ function Calendar() {
 
 const Flex = styled.View`
   flex-direction: row;
+`;
+
+const CalendarColumn = styled.View`
+  gap: 10px;
 `;
 
 const Item = styled.View`

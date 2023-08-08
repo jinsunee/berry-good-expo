@@ -31,6 +31,8 @@ export default function DatePicker({
     toggleShow();
   };
 
+  console.log("date", date);
+
   return (
     <>
       <StyledDate onPress={handlePressButton}>
