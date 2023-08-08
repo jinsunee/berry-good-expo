@@ -80,7 +80,7 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
   return (
     <TouchableOpacity onPress={handleMove}>
       {displayMode === "calendar" && (
-        <StyledText>{moment(date).format("M/D")}</StyledText>
+        <StyledText>{moment(date).format("D")}</StyledText>
       )}
       {displayMode === "normal" && <StyledText>{index}일차</StyledText>}
       <Spacing size={5} />

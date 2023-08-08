@@ -175,14 +175,15 @@ const DateText = styled.Text`
 
 const MonthHeader = styled.View`
   flex-direction: row;
-  padding: 10px 0;
-  align-items: flex-end;
+  padding-top: 20px;
+  /* align-items: flex-end; */
 `;
 
 const MonthHeaderYear = styled.Text`
-  font-size: 18px;
+  font-size: 16px;
   color: ${colors.secondary[3]};
   margin-right: 3px;
+  margin-top: 4px;
 `;
 
 const MonthHeaderMonth = styled.Text`
