@@ -66,8 +66,13 @@ function GoalItem({
               }}
             >
               <Date>{startAt.toString()}</Date>
-              <Date>-</Date>
-              <Date>{endAt.toString()}</Date>
+              {!endAt && <Date>부터 시작</Date>}
+              {endAt && (
+                <>
+                  <Date>-</Date>
+                  <Date>{endAt.toString()}</Date>
+                </>
+              )}
             </View>
           </View>
           <UpdateButton onPress={onPressEdit}>
@@ -89,8 +94,13 @@ function GoalItem({
               }}
             >
               <Date>{startAt.toString()}</Date>
-              <Date>-</Date>
-              <Date>{endAt.toString()}</Date>
+              {!endAt && <Date>부터 시작</Date>}
+              {endAt && (
+                <>
+                  <Date>-</Date>
+                  <Date>{endAt.toString()}</Date>
+                </>
+              )}
             </View>
           </View>
           <UpdateButton onPress={onPressEdit}>

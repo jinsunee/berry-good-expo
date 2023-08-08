@@ -2,9 +2,10 @@ import { useDisplayMode } from "components/pages/Settings/DisplayModeToggleButto
 import { Spacing } from "components/shared/Spacing";
 import { useGoal } from "hooks/useGoal";
 import moment, { Moment } from "moment";
-import React, { Fragment, ReactElement } from "react";
-import { ScrollView, View } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { FlatList, View } from "react-native";
 import styled from "styled-components/native";
+import { dateFormat } from "../../../../constants/date";
 import { colors } from "../../../../utils/colors";
 import { GoalItem } from "./GoalItem";
 
@@ -19,7 +20,7 @@ type DateTtn = Record<
   }
 >;
 
-const getDates = (startAt?: Date, endAt?: Date): DateTtn => {
+const getDates = (startAt?: string, endAt?: string): DateTtn => {
   const _startAt = moment(startAt);
   const _startAtKey = _startAt.format("YYYY.MM");
   const _endAt = moment(endAt);
@@ -102,31 +103,63 @@ function Calendar() {
   const { displayMode } = useDisplayMode();
   const { goal: focusedGoal } = useGoal();
 
+  const [endAt, setEndAt] = useState<string>();
+
   const startAt = focusedGoal?.startAt;
-  const endAt = focusedGoal?.endAt;
+  const _endAt = focusedGoal?.endAt;
 
-  const renderItems = () => {
-    const dateMap = getDates(startAt, endAt);
+  const isLimited = !!_endAt;
 
-    const rtn: ReactElement[] = [];
-    for (const date of Object.keys(dateMap)) {
+  // 한번에 최대 3개월까지만 보여주고, endAt이 끝날 때까지 아래로 스크롤 하면 더 보여줌.
+  // 처음부터 endAt이 없다면 무한으로 보여짐.
+  useEffect(() => {
+    // endAt이 없다면 start로 부터 3개월 후의 마지막 날이 endAt임
+    if (!isLimited) {
+      const _startAt = focusedGoal?.startAt;
+      if (_startAt) {
+        const _endAt = moment(_startAt).add(2, "months").endOf("month");
+        setEndAt(_endAt.format(dateFormat));
+      }
+    } else {
+      setEndAt(_endAt as string);
+    }
+  }, [isLimited, focusedGoal]);
+
+  const handleEndReached = useCallback(() => {
+    if (isLimited) return;
+
+    const newEndAt = moment(endAt)
+      .add(2, "months")
+      .endOf("month")
+      .format(dateFormat);
+    setEndAt(newEndAt);
+  }, [endAt]);
+
+  const renderItem = useCallback(
+    ({ item }: any) => {
       const {
         startAt,
         endAt,
         key: { year, month },
-      } = dateMap[date];
+      } = item;
 
-      rtn.push(
-        <MonthHeader>
-          <MonthHeaderYear>{year}</MonthHeaderYear>
-          <MonthHeaderMonth>{month}</MonthHeaderMonth>
-        </MonthHeader>
+      return (
+        <>
+          <MonthHeader>
+            <MonthHeaderYear>{year}</MonthHeaderYear>
+            <MonthHeaderMonth>{month}</MonthHeaderMonth>
+          </MonthHeader>
+          {getCalendar(startAt, endAt)}
+        </>
       );
-      rtn.push(<Fragment>{getCalendar(startAt, endAt)}</Fragment>);
-    }
+    },
+    [focusedGoal]
+  );
 
-    return rtn;
-  };
+  const dataArr = useMemo(
+    () => Object.values(getDates(startAt, endAt)),
+    [startAt, endAt, focusedGoal]
+  ); // dateMap을 array로 변환
 
   return (
     <View>
@@ -143,19 +176,17 @@ function Calendar() {
         </>
       )}
 
-      <ScrollView>
-        <Spacing size={10} />
-        <FlexColumn>{renderItems()}</FlexColumn>
-        <Spacing size={400} />
-      </ScrollView>
+      <FlatList
+        data={dataArr}
+        renderItem={renderItem}
+        keyExtractor={(item) => `${item.key.year}-${item.key.month}`}
+        ListFooterComponent={<Spacing size={400} />}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.5} // 스크롤이 목록의 하단 50% 부분에 도달하면 호출
+      />
     </View>
   );
 }
-
-const FlexColumn = styled.View`
-  flex-direction: column;
-  gap: 10px;
-`;
 
 const Flex = styled.View`
   flex-direction: row;
@@ -176,7 +207,6 @@ const DateText = styled.Text`
 const MonthHeader = styled.View`
   flex-direction: row;
   padding-top: 20px;
-  /* align-items: flex-end; */
 `;
 
 const MonthHeaderYear = styled.Text`

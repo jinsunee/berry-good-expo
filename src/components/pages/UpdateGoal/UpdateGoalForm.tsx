@@ -22,12 +22,12 @@ export function UpdateGoalForm() {
   const id = route.params?.id;
 
   const isActiveSubmitButton = useMemo(
-    () => !!goal && !!startAt && !!endAt,
-    [goal, startAt, endAt]
+    () => !!goal && !!startAt,
+    [goal, startAt]
   );
 
   const handleSubmit = async () => {
-    if (!goal || !startAt || !endAt) return;
+    if (!goal || !startAt) return;
 
     await onUpdateGoal({ id: Number(id), title: goal, startAt, endAt });
     goBack();

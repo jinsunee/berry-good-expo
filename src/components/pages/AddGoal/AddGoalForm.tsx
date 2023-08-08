@@ -15,12 +15,12 @@ export function AddGoalForm() {
   const [endAt, setEndAt] = useState<Date>();
 
   const isActiveSubmitButton = useMemo(
-    () => !!goal && !!startAt && !!endAt,
-    [goal, startAt, endAt]
+    () => !!goal && !!startAt,
+    [goal, startAt]
   );
 
   const handleSubmit = async () => {
-    if (!goal || !startAt || !endAt) return;
+    if (!goal || !startAt) return;
 
     await onAddGoal({ title: goal, startAt, endAt });
     goBack();

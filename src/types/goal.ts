@@ -2,7 +2,7 @@ export interface Goal {
   id: number;
   title: string;
   startAt: Date;
-  endAt: Date;
+  endAt?: Date;
   items?: GoalItem[];
 }
 
