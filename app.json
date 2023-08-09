@@ -11,18 +11,27 @@
       "resizeMode": "contain",
       "backgroundColor": "#D6A5F4"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.blueberryworks.berrygood"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.blueberryworks.berrygood"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4a0ec5f5-36f4-4cf2-a8f3-a269febc8227"
+      }
     }
   }
 }
