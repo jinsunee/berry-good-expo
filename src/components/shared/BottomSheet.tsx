@@ -12,7 +12,6 @@ import {
   useRef,
 } from "react";
 import { View } from "react-native";
-import { styled } from "styled-components/native";
 
 interface Props {
   title?: string;
@@ -79,9 +78,3 @@ export default function BottomSheet({
     </BottomSheetModalProvider>
   );
 }
-
-const StyledBackground = styled.View`
-  background-color: white;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
-`;
