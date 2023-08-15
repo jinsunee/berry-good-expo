@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
+import TapeSvg from "assets/svgs/tape.svg";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
-import { Badge } from "components/shared/Badge";
 import { useGoal } from "hooks/useGoal";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import styled from "styled-components/native";
 import { colors } from "../../../../utils/colors";
 
@@ -12,14 +12,20 @@ export default function Goal() {
 
   return (
     <GoalContainer onPress={() => navigate("GoalList")}>
-      <Badge>목표</Badge>
-      <View
-        style={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <TapeSvg style={{ position: "absolute", top: -20, left: "50%" }} />
+      <View style={{ display: "flex", gap: 10 }}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-end",
+            gap: 3,
+          }}
+        >
+          <DateText>10일차</DateText>
+          <Text style={{ marginBottom: 2 }}>/ 30일</Text>
+        </View>
+
         <GoalText>{focusedGoal?.title}</GoalText>
       </View>
     </GoalContainer>
@@ -27,18 +33,23 @@ export default function Goal() {
 }
 
 const GoalContainer = styled.Pressable`
-  border-radius: 10px;
-  background-color: ${colors.secondary[0]};
+  border: 1px solid ${colors.secondary[1]};
   padding: 15px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   min-height: 30px;
+  position: relative;
+`;
+
+const DateText = styled.Text`
+  font-size: 22px;
+  font-weight: bold;
+  color: ${colors.dark};
 `;
 
 const GoalText = styled.Text`
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   color: ${colors.dark};
-  margin-left: 10px;
 `;
