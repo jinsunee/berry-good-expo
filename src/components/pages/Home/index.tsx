@@ -10,7 +10,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
 import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
-import Calendar from "./Calendar";
+import { Calendar } from "./Calendar";
 import Goal from "./Goal";
 
 type ViewMode = "calendar" | "todo";
@@ -51,7 +51,7 @@ export default function Page() {
           <>
             <Spacing size={10} />
             <Goal />
-            <Spacing size={20} />
+            <Spacing size={10} />
             <Calendar />
           </>
         )}
