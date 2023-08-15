@@ -11,6 +11,8 @@ import { GoalItem } from "./GoalItem";
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 export function Calendar() {
+  // const { goal } = useGoal();
+
   const [date, setDate] = useState(moment());
 
   const getCalendar = (d: Moment) => {

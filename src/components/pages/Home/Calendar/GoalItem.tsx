@@ -3,25 +3,30 @@ import BadSvg from "assets/svgs/bad1.svg";
 import GoodSvg from "assets/svgs/good.svg";
 import SoSoSvg from "assets/svgs/soso.svg";
 import { HomeStackNavigationType } from "components/navigators/HomeStackNavigator";
-import { useDisplayMode } from "components/pages/Settings/DisplayModeToggleButton/useDisplayMode";
 import { Spacing } from "components/shared/Spacing";
 import * as Device from "expo-device";
+import { useGoal } from "hooks/useGoal";
 import { useGoalItems } from "hooks/useGoalItems";
 import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import Toast from "react-native-toast-message";
 import styled from "styled-components/native";
 import { colors } from "../../../../utils/colors";
 
-export function GoalItem({ date, index }: { date: string; index: number }) {
-  const { displayMode } = useDisplayMode();
+export function GoalItem({ date }: { date: string; index: number }) {
+  const { goal } = useGoal();
   const { data: goalItems } = useGoalItems();
   const { navigate } = useNavigation<HomeStackNavigationType>();
 
   const [size, setSize] = useState<number>(0);
 
   const goalItem = goalItems?.[date];
+  const startAt = goal?.startAt;
+  const endAt = goal?.endAt;
+
+  const isInvalidDate =
+    moment(date).isBefore(startAt, "day") ||
+    (endAt && moment(date).isAfter(endAt, "day"));
 
   useEffect(() => {
     (async () => {
@@ -35,20 +40,23 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
   }, []);
 
   const handleMove = () => {
-    if (moment(date) > moment()) {
-      Toast.show({
-        type: "error",
-        text1: "오늘 이후는 기록할 수 없어요!",
-        topOffset: 100,
-      });
-      return;
-    }
     navigate("Item", { date });
   };
 
   const renderCharacter = useCallback(() => {
-    if (!goalItem) {
+    // date가 startAt과 같은날이거나 더 앞선 날 & endAt이 있다면 이보다 더 이전인 경우
+    if (isInvalidDate) {
       return <EmptyItem width={size} height={size} />;
+    }
+
+    if (!goalItem) {
+      return (
+        <EmptyItem
+          width={size}
+          height={size}
+          backgroundColor={colors.secondary[0]}
+        />
+      );
     }
 
     const point = goalItem?.point;
@@ -63,14 +71,17 @@ export function GoalItem({ date, index }: { date: string; index: number }) {
         return <BadSvg width={size} height={size} fill="#95BCB5" />;
       }
     }
-  }, [size, goalItem]);
+  }, [size, goalItem, goal]);
 
   return (
-    <TouchableOpacity onPress={handleMove}>
-      {displayMode === "calendar" && (
-        <StyledText>{moment(date).format("D")}</StyledText>
-      )}
-      {displayMode === "normal" && <StyledText>{index}일차</StyledText>}
+    <TouchableOpacity
+      onPress={() => {
+        if (!isInvalidDate) {
+          handleMove();
+        }
+      }}
+    >
+      <StyledText>{moment(date).format("D")}</StyledText>
       <Spacing size={5} />
       {renderCharacter()}
     </TouchableOpacity>
@@ -84,9 +95,13 @@ const StyledText = styled.Text`
   color: ${colors.dark};
 `;
 
-const EmptyItem = styled.View<{ width: number; height: number }>`
+const EmptyItem = styled.View<{
+  width: number;
+  height: number;
+  backgroundColor?: string;
+}>`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  background-color: ${colors.secondary[0]};
+  background-color: ${({ backgroundColor }) => backgroundColor};
   border-radius: 50%;
 `;
