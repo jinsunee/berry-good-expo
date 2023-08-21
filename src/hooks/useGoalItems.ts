@@ -1,22 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { GoalItem } from "types/goal";
 import { tables } from "../constants/tables";
 import { queryItems } from "../db/index";
+import { Goal, GoalItem } from "../types/goal";
 import { useDB } from "./useDB";
-import { useGoal } from "./useGoal";
 
 export const goalItemsQueryKey = "goalsItems";
 
-export function useGoalItems() {
+export function useGoalItems({ goal }: { goal?: Goal | null }) {
   const db = useDB();
-  const { goal: focusedGoal } = useGoal();
 
   return useQuery(
-    [goalItemsQueryKey, focusedGoal?.id],
+    [goalItemsQueryKey, goal?.id],
     async () => {
       const result = await queryItems(
         db!,
-        `SELECT * FROM ${tables.goalsItems} WHERE goalId = ${focusedGoal?.id}`
+        `SELECT * FROM ${tables.goalsItems} WHERE goalId = ${goal?.id}`
       );
 
       return result.reduce((acc, cur) => {
@@ -26,6 +24,6 @@ export function useGoalItems() {
         };
       }, {}) as Record<string, GoalItem>;
     },
-    { enabled: db != null || focusedGoal != null }
+    { enabled: db != null || goal != null }
   );
 }

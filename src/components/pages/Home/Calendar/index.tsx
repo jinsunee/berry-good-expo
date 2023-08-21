@@ -1,19 +1,18 @@
 import ArrowLeftSvg from "assets/svgs/arrow-left.svg";
 import ArrowRightSvg from "assets/svgs/arrow-right.svg";
 import { Spacing } from "components/shared/Spacing";
-import moment, { Moment } from "moment";
-import { useState } from "react";
+import { Moment } from "moment";
 import { View } from "react-native";
+import { useRecoilState } from "recoil";
 import styled from "styled-components/native";
 import { colors } from "../../../../utils/colors";
+import { dateAtom } from "../states";
 import { GoalItem } from "./GoalItem";
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 export function Calendar() {
-  // const { goal } = useGoal();
-
-  const [date, setDate] = useState(moment());
+  const [date, setDate] = useRecoilState(dateAtom);
 
   const getCalendar = (d: Moment) => {
     // 0~startAt-1까지 공백으로 채우기

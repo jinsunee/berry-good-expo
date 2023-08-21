@@ -12,6 +12,7 @@ import styled from "styled-components/native";
 import { colors } from "../../../utils/colors";
 import { Calendar } from "./Calendar";
 import Goal from "./Goal";
+import { TodoList } from "./TodoList";
 
 type ViewMode = "calendar" | "todo";
 
@@ -55,6 +56,7 @@ export default function Page() {
             <Calendar />
           </>
         )}
+        {isExistedGoals && mode === "todo" && <TodoList />}
       </View>
     </Container>
   );

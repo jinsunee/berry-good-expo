@@ -14,7 +14,10 @@ export default function DeleteButton() {
   const { isOpen, toggle } = useIsOpen();
   const { goBack } = useNavigation();
   const route = useRoute<RouteProp<HomeStackParamList, "Item">>();
-  const goalItem = useGoalItem({ date: route.params?.date });
+  const goalItem = useGoalItem({
+    date: route.params?.date,
+    goal: route.params?.goal,
+  });
 
   return (
     <>

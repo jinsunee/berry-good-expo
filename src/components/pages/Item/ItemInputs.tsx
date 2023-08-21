@@ -13,7 +13,10 @@ import { ItemFormInputs } from "./ItemFormProvider";
 
 export function ItemInputs() {
   const route = useRoute<RouteProp<HomeStackParamList, "Item">>();
-  const goalItem = useGoalItem({ date: route.params?.date });
+  const goalItem = useGoalItem({
+    date: route.params?.date,
+    goal: route.params?.goal,
+  });
 
   const { control } = useFormContext<ItemFormInputs>();
   const {

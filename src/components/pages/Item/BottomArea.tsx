@@ -13,10 +13,13 @@ import { useUpdateGoalItem } from "./hooks/useUpdateGoalItem";
 export function BottomArea() {
   const {
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = useFormContext<ItemFormInputs>();
   const route = useRoute<RouteProp<HomeStackParamList, "Item">>();
-  const goalItem = useGoalItem({ date: route.params?.date });
+  const goalItem = useGoalItem({
+    date: route.params?.date,
+    goal: route.params?.goal,
+  });
   const { mutateAsync: onAddGoalItem } = useAddGoalItem();
   const { mutateAsync: onUpdateGoalItem } = useUpdateGoalItem();
   const { goBack } = useNavigation();

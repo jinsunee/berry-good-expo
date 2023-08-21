@@ -15,7 +15,8 @@ import { colors } from "../../../../utils/colors";
 
 export function GoalItem({ date }: { date: string; index: number }) {
   const { goal } = useGoal();
-  const { data: goalItems } = useGoalItems();
+  const { data: goalItems } = useGoalItems({ goal });
+  const { goal: focusedGoal } = useGoal();
   const { navigate } = useNavigation<HomeStackNavigationType>();
 
   const [size, setSize] = useState<number>(0);
@@ -40,7 +41,9 @@ export function GoalItem({ date }: { date: string; index: number }) {
   }, []);
 
   const handleMove = () => {
-    navigate("Item", { date });
+    if (goal) {
+      navigate("Item", { date, goal });
+    }
   };
 
   const renderCharacter = useCallback(() => {
